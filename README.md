@@ -217,7 +217,10 @@ Examples of actions which can be performed on the Asset Link:
 ```bash
 # To run the api tests on Asset Link
 $ al-ctl test api -e localhost:8081 -f [] -o []
+
 # The Asset Link must be running on the provided address, for example here: localhost:8081
+# to additionally validate the discovered asset against schema
+al-ctl test api -v -e localhost:8081 -f [] -o [] -b <base-schema> -s <extended-schema> -t <target-class>
 
 # To run discovery on the Asset Link
 $ al-ctl discovery start -e localhost:8081 --filters [] --options []
@@ -225,7 +228,7 @@ $ al-ctl discovery start -e localhost:8081 --filters [] --options []
 # To validate the asset against the base-schema using linkml-validator where schema file should be yaml
 $ al-ctl test assets --base-schema-path <base-schema> --asset-path <asset>
 --target-class <target-class>
-# Example: al-ctl test assets --base-schema-path ./iah_base-v0.7.5.yaml
+# Example: al-ctl test assets --base-schema-path ./iah_base-v0.9.0.yaml
 --asset-path ./Asset-001.ld.json --target-class Asset
 
 # To validate the asset against the extended-schema using linkml-validator where schema file should be yaml
@@ -233,6 +236,8 @@ $ al-ctl test assets --base-schema-path <base-schema> --asset-path <asset>
 --schema-path <extended-schema> --target-class <target-class>
 # Example: al-ctl test assets --base-schema-path ./iah_base-v0.7.5.yaml
 --asset-path ./SatController-001.json --schema-path ./cdm_sat.yaml --target-class SatController
+
+# Use the -i flag to indicate that the asset is in the form of semantic-identifiers
 
 # To explore on more actions to perform on Asset Link
 $ al-ctl --help
