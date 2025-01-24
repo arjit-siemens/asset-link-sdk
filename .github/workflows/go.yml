@@ -6,6 +6,8 @@ name: Go
 
 on:
   push:
+    branches: 
+    - add-setup-for-continuous-validation-of-discovered-asset 
   pull_request:
 
 permissions:
