@@ -48,7 +48,7 @@ func init() {
 
 	assetsCmd.Flags().StringVarP(&baseSchemaPath, "base-schema-path", "b", "", "Path to the base schema YAML file")
 	assetsCmd.Flags().StringVarP(&schemaPath, "extended-schema-path", "s", "", "Path to the extended schema YAML file")
-	assetsCmd.Flags().StringVarP(&assetPath, "asset-path", "a", "", "Path to the asset JSON file")
+	assetsCmd.Flags().StringVarP(&shared.AssetJsonPath, "asset-path", "a", "", "Path to the asset JSON file")
 	assetsCmd.Flags().BoolVarP(&semanticIdentifierInputType, "semantic-identifier-input-type", "i", false,
 		"should be true if asset input is of type semantic identifiers")
 	assetsCmd.Flags().StringVarP(&targetClass, "target-class", "t", "", "Target class for validation of asset")
