@@ -230,7 +230,6 @@ $ al-ctl test api -e localhost:8081 [-d <discovery-config>]
 $ al-ctl test assets --base-schema-path <base-schema> --asset-path <asset>
 --target-class <target-class>
 # Example: al-ctl test assets --base-schema-path ./iah_base-v0.9.0.yaml --asset-path ./Asset-001.ld.json --target-class Asset
-# set the -i flag to true to input asset as semantic-identifiers
 
 # To validate the asset against the extended-schema using linkml-validator where schema file should be yaml
 $ al-ctl test assets --base-schema-path <base-schema> --asset-path <asset>
