@@ -7,10 +7,12 @@
 package test
 
 import (
+	"fmt"
+	"github.com/industrial-asset-hub/asset-link-sdk/v3/cmd/al-ctl/internal/shared"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-
-	"github.com/industrial-asset-hub/asset-link-sdk/v3/cmd/al-ctl/internal/shared"
+	"os"
+	"os/exec"
 )
 
 var TestCmd = &cobra.Command{
@@ -34,10 +36,11 @@ var apiCmd = &cobra.Command{
 }
 
 var (
-	baseSchemaPath string
-	schemaPath     string
-	targetClass    string
-	discoveryFile  string
+	baseSchemaPath     string
+	schemaPath         string
+	targetClass        string
+	discoveryFile      string
+	pythonEnvSupported bool
 )
 
 func init() {
@@ -48,6 +51,7 @@ func init() {
 	assetsCmd.Flags().StringVarP(&schemaPath, "extended-schema-path", "s", "", "Path to the extended schema YAML file")
 	assetsCmd.Flags().StringVarP(&shared.AssetJsonPath, "asset-path", "a", "", "Path to the asset JSON file")
 	assetsCmd.Flags().StringVarP(&targetClass, "target-class", "t", "", "Target class for validation of asset")
+	assetsCmd.Flags().BoolVarP(&pythonEnvSupported, "python-env-supported", "p", false, "should be set to true if python environment is supported")
 	apiCmd.Flags().StringVarP(&discoveryFile, "discovery-file", "d", "", shared.DiscoveryFileDesc)
 	apiCmd.Flags().BoolVarP(&shared.AssetValidationRequired, "validate-asset-against-schema", "v", false,
 		"should be true if discovered asset is to be validated against schema")
@@ -57,6 +61,19 @@ func init() {
 }
 
 func runAssetsTests(cmd *cobra.Command, args []string) {
+	if pythonEnvSupported {
+		cmd := exec.Command("linkml-validate", shared.AssetJsonPath,
+			"--include-range-class-descendants", "--target-class="+targetClass, "-s", schemaPath)
+		fmt.Printf("Running command: %s\n", cmd.String())
+
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			log.Err(err).Msg("failed to validate asset against schema")
+		}
+		return
+	}
 	err := RunContainer("linkml-validator")
 	if err != nil {
 		log.Err(err).Msg("failed to validate asset against schema")
